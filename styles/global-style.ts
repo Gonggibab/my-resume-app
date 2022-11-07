@@ -1,8 +1,6 @@
 import { useRouter } from 'next/router';
 import { createGlobalStyle } from 'styled-components';
 
-const locale = useRouter;
-
 const GlobalStyle = createGlobalStyle`
   html,
   body {
@@ -11,23 +9,26 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${({ theme }) => theme.colors.white};
     padding: .6rem 1rem;
     margin: 0;
-    font-family: 'Noto Sans KR', 'Roboto', sans-serif;
-  }
+    letter-spacing: .12em;
 
-  a {
-    color: inherit;
-    text-decoration: none;
+    &:lang(ko) {
+      font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+    }
+
+    &:lang(en) {
+      font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    }
   }
 
   * {
     box-sizing: border-box;
 
     &:lang(ko) {
-      font-family: 'Noto Sans KR', sans-serif;
+      font-family: 'Noto Sans KR', 'Roboto', sans-serif;
     }
 
     &:lang(en) {
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Roboto', 'Noto Sans KR', sans-serif;
     }
   }
 
@@ -40,19 +41,24 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
   }
+  
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 
   button {
     margin: 0; 
     padding: 0;
     border: none;
     outline:none;
-    cursor: pointer;
     color: inherit;
     font-size: inherit;
     font-family: 'Noto Sans KR', sans-serif;  
     letter-spacing: 1px;
     background: transparent;
     transition: all 0.2s ease-in;
+    cursor: pointer;
   }
 `;
 

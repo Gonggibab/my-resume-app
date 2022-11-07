@@ -9,7 +9,10 @@ type Props = {
   title?: string;
 };
 
-const Layout = ({ children, title = 'Habyte | 습관처럼 코딩하기' }: Props) => (
+const Layout = ({
+  children,
+  title = '정진우 | 프론트엔드 포트폴리오',
+}: Props) => (
   <div>
     <Head>
       <title>{title}</title>

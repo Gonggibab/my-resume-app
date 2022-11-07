@@ -1,63 +1,82 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 type TextProps = {
-  size?: string;
-  weight?: string;
-  length: number;
+  locale: string;
+  animate: boolean;
 };
 
 const Text = styled.p<TextProps>`
   display: table-cell;
-  padding: 0 0.05em;
-  font-size: ${(p) => (p.size ? p.size : 'inherit')};
-  font-weight: ${(p) => (p.size ? p.weight : 'inherit')};
+  padding: 0 0.1em;
+  font-size: ${(p) => (p.locale === 'ko' ? '6vw' : '5vw')};
+  font-weight: ${(p) => (p.locale === 'ko' ? '100' : '100')};
   vertical-align: middle;
   border: transparent;
-  animation: cursor 0.5s ease ${(p) => p.length};
+  ${(p) =>
+    p.animate &&
+    css`
+      animation: cursor 0.6s ease infinite;
+    `};
 
   @keyframes cursor {
     to {
-      border-right: 0.05em solid ${({ theme }) => theme.colors.black};
+      border-right: 0.05em solid ${(p) => p.theme.colors.black};
     }
+  }
+
+  &:before {
+    content: '';
+    display: inline-block;
   }
 `;
 
-type TypingProps = {
-  size?: string;
-  weight?: string;
-  children: string;
-};
-
-const TypingAnimation = ({ size, weight, children }: TypingProps) => {
-  const router = useRouter();
+const TypingAnimation = ({ children }) => {
+  const { locale } = useRouter();
   const interval = useRef<NodeJS.Timeout>(null);
-  const [text, setText] = useState<string>('');
+  const typingInterval = useRef<NodeJS.Timeout>(null);
+  const [text, setText] = useState<string>(' ');
+  const [animate, setAnimate] = useState<boolean>(false);
 
-  const typing = useCallback(() => {
-    let n = 0;
-    interval.current = setInterval(() => {
-      const char = children[n++];
-      if (typeof char === 'string') {
-        setText((text) => text + char);
-      }
+  const typing = useCallback(
+    (delay: number) => {
+      let n = 0;
+      interval.current = setInterval(() => {
+        const char = children[n++];
+        if (typeof char === 'string') {
+          setText((text) => text + char);
+        }
 
-      if (n >= children.length) {
-        clearInterval(interval.current);
-      }
-    }, 200);
-  }, [router.locale]);
+        if (n >= children.length) {
+          clearInterval(interval.current);
+
+          const animateInterval = setInterval(() => {
+            setAnimate(false);
+            clearInterval(animateInterval);
+          }, 3000);
+        }
+      }, delay);
+    },
+    [locale]
+  );
 
   useEffect(() => {
     setText('');
+    setAnimate(false);
     clearInterval(interval.current);
-    typing();
-  }, [router.locale]);
+    clearInterval(typingInterval.current);
+
+    typingInterval.current = setInterval(() => {
+      setAnimate(true);
+      typing(locale === 'ko' ? 200 : 100);
+      clearInterval(typingInterval.current);
+    }, 2000);
+  }, [locale]);
 
   return (
-    <Text size={size} weight={weight} length={children.length}>
-      {text}{' '}
+    <Text locale={locale} animate={animate}>
+      {text}
     </Text>
   );
 };

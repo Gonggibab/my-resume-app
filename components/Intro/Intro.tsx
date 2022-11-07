@@ -1,35 +1,28 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import styled from 'styled-components';
 import TypingAnimation from './TypingAnimation';
+import NameTitle from './NameTitle';
 
-type ArticleProps = {
-  locale?: string;
-};
+const IntroSection = styled.section`
+  width: 100vw;
+  height: 100vh;
+`;
 
-const Article = styled.article<ArticleProps>`
+const Article = styled.article`
   flex-direction: column;
-
-  & > h1 {
-    font-size: ${(p) => (p.locale === 'ko' ? '16vw' : '10vw')};
-    font-weight: 900;
-  }
 `;
 
 const Intro = () => {
-  const { locale } = useRouter();
   const { t } = useTranslation('');
 
   return (
-    <section>
-      <Article locale={locale}>
-        <h1>{t('intro:name')}</h1>
-        <TypingAnimation size="6vw" weight="900">
-          {t('intro:position')}
-        </TypingAnimation>
+    <IntroSection>
+      <Article>
+        <NameTitle>{t('intro:name')}</NameTitle>
+        <TypingAnimation>{t('intro:position')}</TypingAnimation>
       </Article>
-    </section>
+    </IntroSection>
   );
 };
 

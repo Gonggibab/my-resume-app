@@ -1,9 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 let StyledHeader = styled.header`
+  position: sticky;
+  top: 0;
   display: flex;
   align-items: center;
   width: 100%;
