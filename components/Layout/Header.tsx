@@ -3,12 +3,34 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
+import { MdLanguage } from 'react-icons/md';
+
 let StyledHeader = styled.header`
+  z-index: 100;
   position: sticky;
-  top: 0;
+  top: 1rem;
+  right: 1rem;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
-  width: 100%;
+  width: 100vw;
+
+  & > button {
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    & > svg {
+      margin: 2px 4px 0 0;
+    }
+  }
 `;
 
 const Header = () => {
@@ -28,11 +50,10 @@ const Header = () => {
 
   return (
     <StyledHeader>
-      <nav>
-        <Link href="/">Home</Link> | <Link href="/about">About</Link> |{' '}
-        <Link href="/users">Users List</Link> |{' '}
-        <button onClick={changeLocale}>{curLanguage}</button>
-      </nav>
+      <button onClick={changeLocale}>
+        <MdLanguage size={`1.2rem`} />
+        {curLanguage}
+      </button>
     </StyledHeader>
   );
 };

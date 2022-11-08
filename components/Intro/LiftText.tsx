@@ -8,17 +8,10 @@ type TitleProps = {
 };
 
 const Title = styled.h1<TitleProps>`
-  font-size: ${(p) => (p.locale === 'ko' ? '16vw' : '12vw')};
-  font-weight: ${(p) => (p.locale === 'ko' ? '900' : '900')};
+  margin: 0.4em 0.1em;
+  font-size: ${(p) => (p.locale === 'ko' ? '4rem' : '4rem')};
+  font-weight: ${(p) => (p.locale === 'ko' ? '500' : '300')};
   overflow: hidden;
-
-  ${(p) =>
-    p.locale === 'en' &&
-    css`
-      padding: 0.4em 0;
-      white-space: pre-wrap;
-      line-height: 0.8em;
-    `};
 
   & > span {
     display: block;
@@ -42,7 +35,7 @@ const Title = styled.h1<TitleProps>`
   }
 `;
 
-const NameTitle = ({ children }) => {
+const LiftText = ({ children }) => {
   const { locale } = useRouter();
   const [animate, setAnimate] = useState<boolean>(true);
 
@@ -62,4 +55,4 @@ const NameTitle = ({ children }) => {
   );
 };
 
-export default NameTitle;
+export default LiftText;

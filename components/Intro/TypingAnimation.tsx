@@ -1,30 +1,25 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import styled, { css } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 type TextProps = {
   locale: string;
-  animate: boolean;
 };
+
+const cursor = (p) => keyframes` 
+  to {
+    border-right: 0.05em solid ${p.theme.colors.black};
+  }
+`;
 
 const Text = styled.p<TextProps>`
   display: table-cell;
   padding: 0 0.1em;
-  font-size: ${(p) => (p.locale === 'ko' ? '6vw' : '5vw')};
+  font-size: ${(p) => (p.locale === 'ko' ? '3rem' : '3rem')};
   font-weight: ${(p) => (p.locale === 'ko' ? '100' : '100')};
   vertical-align: middle;
   border: transparent;
-  ${(p) =>
-    p.animate &&
-    css`
-      animation: cursor 0.6s ease infinite;
-    `};
-
-  @keyframes cursor {
-    to {
-      border-right: 0.05em solid ${(p) => p.theme.colors.black};
-    }
-  }
+  animation: ${cursor} 0.6s ease infinite;
 
   &:before {
     content: '';
@@ -32,29 +27,44 @@ const Text = styled.p<TextProps>`
   }
 `;
 
-const TypingAnimation = ({ children }) => {
+type TypingProps = {
+  texts: string[];
+};
+
+const TypingAnimation = ({ texts }: TypingProps) => {
   const { locale } = useRouter();
   const interval = useRef<NodeJS.Timeout>(null);
   const typingInterval = useRef<NodeJS.Timeout>(null);
   const [text, setText] = useState<string>(' ');
-  const [animate, setAnimate] = useState<boolean>(false);
 
   const typing = useCallback(
     (delay: number) => {
-      let n = 0;
+      let listIdx = 0;
+      let textIdx = 0;
+      let isTyping = true;
       interval.current = setInterval(() => {
-        const char = children[n++];
-        if (typeof char === 'string') {
-          setText((text) => text + char);
+        if (isTyping) {
+          const char = texts[listIdx][textIdx++];
+
+          if (typeof char === 'string') {
+            setText((text) => text + char);
+          }
+        } else {
+          textIdx--;
+          setText((text) => text.slice(0, -1));
         }
 
-        if (n >= children.length) {
-          clearInterval(interval.current);
+        if (textIdx <= 0) {
+          console.log({ listIdx });
+          listIdx + 1 >= texts.length ? (listIdx = 0) : listIdx++;
+          isTyping = true;
+        }
 
-          const animateInterval = setInterval(() => {
-            setAnimate(false);
-            clearInterval(animateInterval);
-          }, 3000);
+        if (textIdx >= texts[listIdx].length) {
+          const wait = setInterval(() => {
+            isTyping = false;
+            clearInterval(wait);
+          }, 2000);
         }
       }, delay);
     },
@@ -63,22 +73,16 @@ const TypingAnimation = ({ children }) => {
 
   useEffect(() => {
     setText('');
-    setAnimate(false);
     clearInterval(interval.current);
     clearInterval(typingInterval.current);
 
     typingInterval.current = setInterval(() => {
-      setAnimate(true);
       typing(locale === 'ko' ? 200 : 100);
       clearInterval(typingInterval.current);
     }, 2000);
   }, [locale]);
 
-  return (
-    <Text locale={locale} animate={animate}>
-      {text}
-    </Text>
-  );
+  return <Text locale={locale}>{text}</Text>;
 };
 
 export default TypingAnimation;

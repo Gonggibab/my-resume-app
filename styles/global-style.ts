@@ -7,9 +7,10 @@ const GlobalStyle = createGlobalStyle`
     min-width: 300px;
     color: ${({ theme }) => theme.colors.black};
     background-color: ${({ theme }) => theme.colors.white};
-    padding: .6rem 1rem;
     margin: 0;
+    width: 100vw;
     letter-spacing: .12em;
+    overflow-x: hidden;
 
     &:lang(ko) {
       font-family: 'Noto Sans KR', 'Roboto', sans-serif;
@@ -18,6 +19,11 @@ const GlobalStyle = createGlobalStyle`
     &:lang(en) {
       font-family: 'Roboto', 'Noto Sans KR', sans-serif;
     }
+  }
+
+  main {
+    padding: 4rem;
+    width: 100vw;
   }
 
   * {
