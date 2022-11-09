@@ -5,31 +5,43 @@ import styled from 'styled-components';
 
 import { MdLanguage } from 'react-icons/md';
 
-let StyledHeader = styled.header`
+const StyledHeader = styled.header`
   z-index: 100;
-  position: sticky;
-  top: 1rem;
-  right: 1rem;
+  position: absolute;
+  top: 2rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
+  padding: 0 2rem;
   width: 100vw;
 
-  & > button {
-    display: flex;
-    align-items: center;
-    margin-right: 2rem;
+  & > img {
+    cursor: pointer;
+  }
+`;
+
+const NavBar = styled.nav`
+  & > a {
+    margin: 0 4rem;
     font-size: 1rem;
-    font-weight: 500;
-    opacity: 0.6;
+    font-weight: 900;
+  }
+`;
 
-    &:hover {
-      opacity: 1;
-    }
+const ChangeLocale = styled.button`
+  display: flex;
+  align-items: center;
+  margin-right: 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  opacity: 0.6;
 
-    & > svg {
-      margin: 2px 4px 0 0;
-    }
+  &:hover {
+    opacity: 1;
+  }
+
+  & > svg {
+    margin: 2px 4px 0 0;
   }
 `;
 
@@ -50,10 +62,21 @@ const Header = () => {
 
   return (
     <StyledHeader>
-      <button onClick={changeLocale}>
+      <img
+        src="/logo.png"
+        alt="로고"
+        width={50}
+        height={30}
+        onClick={() => router.push('/')}
+      />
+      <NavBar>
+        <Link href={'skills'}>스킬</Link>
+        <Link href={'projects'}>프로젝트</Link>
+      </NavBar>
+      <ChangeLocale onClick={changeLocale}>
         <MdLanguage size={`1.2rem`} />
         {curLanguage}
-      </button>
+      </ChangeLocale>
     </StyledHeader>
   );
 };

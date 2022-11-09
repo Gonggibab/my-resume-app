@@ -21,11 +21,6 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-  main {
-    padding: 4rem;
-    width: 100vw;
-  }
-
   * {
     box-sizing: border-box;
 

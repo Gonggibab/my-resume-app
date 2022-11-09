@@ -6,11 +6,13 @@ import Header from 'components/Layout/Header';
 type Props = {
   children?: ReactNode;
   title?: string;
+  footer?: boolean;
 };
 
 const Layout = ({
   children,
   title = '정진우 | 프론트엔드 포트폴리오',
+  footer = false,
 }: Props) => (
   <div>
     <Head>
@@ -21,9 +23,11 @@ const Layout = ({
     </Head>
     <Header />
     <main>{children}</main>
-    <footer>
-      <span>I&apos;m here to stay (Footer)</span>
-    </footer>
+    {footer && (
+      <footer>
+        <span>I&apos;m here to stay (Footer)</span>
+      </footer>
+    )}
   </div>
 );
 

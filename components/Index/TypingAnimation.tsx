@@ -55,16 +55,12 @@ const TypingAnimation = ({ texts }: TypingProps) => {
         }
 
         if (textIdx <= 0) {
-          console.log({ listIdx });
           listIdx + 1 >= texts.length ? (listIdx = 0) : listIdx++;
           isTyping = true;
         }
 
-        if (textIdx >= texts[listIdx].length) {
-          const wait = setInterval(() => {
-            isTyping = false;
-            clearInterval(wait);
-          }, 2000);
+        if (textIdx > texts[listIdx].length) {
+          isTyping = false;
         }
       }, delay);
     },
@@ -77,7 +73,7 @@ const TypingAnimation = ({ texts }: TypingProps) => {
     clearInterval(typingInterval.current);
 
     typingInterval.current = setInterval(() => {
-      typing(locale === 'ko' ? 200 : 100);
+      typing(locale === 'ko' ? 150 : 100);
       clearInterval(typingInterval.current);
     }, 2000);
   }, [locale]);
