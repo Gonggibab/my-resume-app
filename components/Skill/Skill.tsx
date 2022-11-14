@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import useTranslation from "next-translate/useTranslation";
 import styled from "styled-components";
 
 import Layout from "@/components/Layout/Layout";
-import TrackingEye from "./Face";
+import Face from "./Face";
+import SkillNames from "./Skillnames";
 
 const SkillSection = styled.section`
   position: relative;
@@ -41,13 +41,8 @@ const Skill = () => {
   return (
     <Layout>
       <SkillSection ref={ref} onMouseMove={(e) => onMouseMove(e)}>
-        <h1>스킬</h1>
-        <p>HTML5 / CSS3 / JavaScript / TypeScript / React / NodeJS / Git </p>
-        <p>
-          가운데 아래 얼굴이 해당 기술에 마우스를 올릴때마다 표정으로 숙련도를
-          보여준다
-        </p>
-        <TrackingEye posX={posX} posY={posY} />
+        <Face posX={posX} posY={posY} />
+        <SkillNames />
       </SkillSection>
     </Layout>
   );

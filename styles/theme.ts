@@ -1,4 +1,4 @@
-import { DefaultTheme } from 'styled-components';
+import { DefaultTheme } from "styled-components";
 
 export const theme: DefaultTheme = {
   device: {
@@ -7,8 +7,9 @@ export const theme: DefaultTheme = {
     labtop: `screen and (max-width: 1024px)`,
   },
   colors: {
-    black: '#1E1F1D',
-    white: '#EEEEEE',
+    black: "#1E1F1D",
+    white: "#EEEEEE",
+    orange: "#FCA311",
   },
   fonts: {
     kor: `'Noto Sans KR', sans-serif`,

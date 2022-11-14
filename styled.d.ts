@@ -1,6 +1,6 @@
-import 'styled-components';
+import "styled-components";
 
-declare module 'styled-components' {
+declare module "styled-components" {
   export interface DefaultTheme {
     device: {
       mobile: string;
@@ -10,6 +10,7 @@ declare module 'styled-components' {
     colors: {
       black: string;
       white: string;
+      orange: string;
     };
     fonts: {
       kor: string;
