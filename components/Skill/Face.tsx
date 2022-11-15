@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 
 type MouthProps = {
@@ -7,8 +7,8 @@ type MouthProps = {
 
 const Face = styled.div`
   position: absolute;
-  bottom: 30%;
-  right: 50%;
+  bottom: 50%;
+  right: 30%;
   transform: translate(50%, 50%);
   display: flex;
   flex-direction: column;
@@ -46,7 +46,7 @@ const Pupil = styled.div`
 
 const mouthType = (type: string) => {
   switch (type) {
-    case "smile":
+    case "happy":
       return css`
         width: 120px;
         height: 60px;
@@ -70,24 +70,49 @@ const Mouth = styled.div<MouthProps>`
 `;
 
 type TrackingEyeProps = {
-  posX: number;
-  posY: number;
+  mouseX: number;
+  mouseY: number;
+  emotion: string;
 };
 
-const TrackingEye = ({ posX, posY }: TrackingEyeProps) => {
-  const [mouthType, setMouthType] = useState<string>("default");
+const TrackingEye = ({ mouseX, mouseY, emotion }: TrackingEyeProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [faceX, setFaceX] = useState<number>(0);
+  const [faceY, setFaceY] = useState<number>(0);
+  const [pupilX, setPupilX] = useState<number>(0);
+  const [pupilY, setPupilY] = useState<number>(0);
+
+  const getFacePos = (section: HTMLDivElement) => {
+    const parentPos = section.parentElement.getBoundingClientRect();
+    const facePos = section.getBoundingClientRect();
+    setFaceX(facePos.x + Math.round(facePos.width / 2));
+    setFaceY(facePos.top - parentPos.top + Math.round(facePos.height / 2));
+  };
+
+  const calcPupilPos = () => {
+    setPupilX(parseFloat(((mouseX - faceX) / faceX).toFixed(2)));
+    setPupilY(parseFloat(((mouseY - faceY) / faceY).toFixed(2)));
+  };
+
+  useEffect(() => {
+    getFacePos(ref.current);
+  }, []);
+
+  useEffect(() => {
+    calcPupilPos();
+  }, [mouseX, mouseY]);
 
   return (
-    <Face>
+    <Face ref={ref}>
       <Eyes>
         <Eye>
-          <Pupil style={{ translate: `${posX * 20}px ${posY * 20}px` }} />
+          <Pupil style={{ translate: `${pupilX * 20}px ${pupilY * 20}px` }} />
         </Eye>
         <Eye>
-          <Pupil style={{ translate: `${posX * 20}px ${posY * 20}px` }} />
+          <Pupil style={{ translate: `${pupilX * 20}px ${pupilY * 20}px` }} />
         </Eye>
       </Eyes>
-      <Mouth type={mouthType} />
+      <Mouth type={emotion} />
     </Face>
   );
 };
